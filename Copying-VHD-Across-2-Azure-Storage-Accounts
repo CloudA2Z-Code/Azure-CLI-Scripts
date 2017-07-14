@@ -1,0 +1,14 @@
+
+echo " CLI script to copy VHD across 2 Azure storage accounts ..."
+echo " Conditions: Destination Storage account is a Genral Purpose Storage account"
+echo " Conditions: Source Storage account configured with Container Access Policy"
+
+echo " Creating the container..."
+az storage container create --name DestinationContainerName
+
+echo " Container Created"
+
+echo " Copying the VHD from Source Account to Destination storage account..."
+az storage blob copy start --account-name StorageAccountName --account-key StorageAccountKey --destination-blob DesBlobName --destination-container DestinationContainerName --source-uri https://SourceStorageAccountName.blob.core.windows.net/vhds/VHDNAME.vhd
+
+echo " Completed Copying the VHD from Source Account to Destination storage account..."
