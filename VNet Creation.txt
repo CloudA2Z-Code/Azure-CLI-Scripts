@@ -1,0 +1,29 @@
+az group create --name TestRG --location centralus
+
+az network vnet create \
+--name TestVNet \
+--resource-group TestRG \
+--location centralus \
+--address-prefix 192.168.0.0/16 \
+--subnet-name FrontEnd \
+--subnet-prefix 192.168.1.0/24
+
+az network vnet list --query '[?name==`TestVNet`].{Where:location,Name:name,Group:resourceGroup}' -o table
+
+az network vnet subnet create \
+--address-prefix 192.168.2.0/24 \
+--name BackEnd \
+--resource-group TestRG \
+--vnet-name TestVNet
+
+az network vnet show \
+-g TestRG \
+-n TestVNet \
+--query '{Name:name,Where:location,Group:resourceGroup,Status:provisioningState,SubnetCount:subnets | length(@)}' \
+-o table
+
+az network vnet subnet list \
+-g TestRG \
+--vnet-name testvnet \
+--query '[].{Name:name,CIDR:addressPrefix,Status:provisioningState}' \
+-o table
